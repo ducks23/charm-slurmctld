@@ -9,10 +9,8 @@ from ops.main import main
 
 from ops.model import ActiveStatus, MaintenanceStatus
 
-from interface_host_port import (
-        #HostPortProvides,
-        HostPortRequires,
-)
+from interface_host_port import HostPortRequires
+
 
 from slurm_snap_instance_manager import SlurmSnapInstanceManager
 
@@ -53,11 +51,7 @@ class SlurmctldCharm(CharmBase):
 
 
 def handle_dbd_host_port_available(event, fw_adapter):
-    logger.info("host data")
-    logger.info(event.data.host)
-    logger.info("port data")
-    logger.info(event.data.port)
-    port = event.data.port
+    port = event.hp_info.port
     fw_adapter.set_unit_status(ActiveStatus(port))
 
 def handle_install(event, fw_adapter):

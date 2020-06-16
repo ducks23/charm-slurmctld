@@ -14,3 +14,6 @@ series:
 provides:
   host-port:
     interface: host-port
+requires:
+  slurmdbd-host-port:
+    interface: host-port

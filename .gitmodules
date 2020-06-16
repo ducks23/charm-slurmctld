@@ -1,0 +1,3 @@
+[submodule "mod/slurm-snap-instance-manager"]
+	path = mod/slurm-snap-instance-manager
+	url = https://github.com/omnivector-solutions/slurm-snap-instance-manager

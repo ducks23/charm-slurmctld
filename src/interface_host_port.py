@@ -1,5 +1,5 @@
 from time import sleep
-
+  
 import logging
 
 from ops.framework import (
@@ -11,12 +11,37 @@ from ops.framework import (
 
 logger = logging.getLogger()
 
+
+class HostPortProvides(Object):
+    def __init__(self, charm, relation_name):
+        super().__init__(charm, relation_name)
+        self.framework.observe(
+            charm.on[relation_name].relation_joined,
+            self._on_relation_joined
+        )
+        self.host = None
+        self.port = None
+
+
+    def _on_relation_joined(self, event):
+        event.relation.data[self.model.unit].setdefault('port', self.port)
+        event.relation.data[self.model.unit].setdefault('host', self.host)
+
+    def set_host(self, host):
+        self.host = str(host)
+
+    def set_port(self, port):
+        self.port = str(port)
+
+#class above include everything you need to provide a host and port
+#classes below include everything needed to require host and port
+
 class HostPortAvailable(EventBase):
     def __init__(self, handle, host, port):
         super().__init__(handle)
         self.host = host
         self.port = port
-    
+
     @property
     def host(self):
         return self.host

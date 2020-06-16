@@ -12,7 +12,7 @@ from ops.framework import (
 logger = logging.getLogger()
 
 
-class HostPort(Object):
+class HostPortProvides(Object):
     def __init__(self, charm, relation_name):
         super().__init__(charm, relation_name)
         self.framework.observe(

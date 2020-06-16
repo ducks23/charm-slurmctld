@@ -23,7 +23,7 @@ class SlurmctldCharm(CharmBase):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.slurm_snap = self.slurm_instance_manager_cls(self, "slurmdbd")
+        self.slurm_snap = self.slurm_instance_manager_cls(self, "slurmctld")
         self.fw_adapter = FrameworkAdapter(self.framework)
         self.hp = HostPort(self, "host-port")
 

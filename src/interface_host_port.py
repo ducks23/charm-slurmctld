@@ -13,10 +13,11 @@ logger = logging.getLogger()
 
 
 class HostPortAvailableEvent(EventBase):
+    
     def __init__(self, handle, hp_info):
         super().__init__(handle)
         self._hp = hp_info
-
+    
     @property
     def hp_info(self):
         return self._hp
@@ -49,11 +50,13 @@ class HostPortRequires(Object):
 
 class HostPort:
     def __init__(self, host, port):
-        self._host = host
-        self._port = port
+        self.h = host
+        self.p = port
 
+    @property
     def host(self):
-        return self._host
-
+        return self.h
+    
+    @property
     def port(self):
-        return self._port
+        return self.p

@@ -9,8 +9,7 @@ description: |
 tags:
     - misc
 series:
-    - bionic
-    - xenial
+    - focal
 provides:
   host-port:
     interface: host-port

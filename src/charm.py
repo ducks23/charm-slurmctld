@@ -19,16 +19,18 @@ logger = logging.getLogger()
 
 
 class SlurmctldCharm(CharmBase):
+    slurm_instance_manager_cls = SlurmSnapInstanceManager
 
     def __init__(self, *args):
         super().__init__(*args)
 
-        self.dbd_requires_hp = HostPortRequires(self, "slurmdbd-host-port")
+        self.dbd_requires = HostPortRequires(self, "slurmdbd-host-port")
         self.fw_adapter = FrameworkAdapter(self.framework)
+        self.slurm_snap = self.slurm_instance_manager_cls(self, "slurmdbd")
 
         event_handler_bindings = {
             self.on.install: self._on_install,
-            self.dbd_requires_hp.on.host_port_available:
+            self.dbd_requires.on.host_port_available:
                 self._on_dbd_host_port_available,
 
         }
@@ -40,6 +42,7 @@ class SlurmctldCharm(CharmBase):
         handle_install(
             event,
             self.fw_adapter,
+            self.slurm_snap,
         )
 
     def _on_dbd_host_port_available(self, event):
@@ -48,15 +51,15 @@ class SlurmctldCharm(CharmBase):
             self.fw_adapter,
         )
 
+def handle_install(event, fw_adapter, slurm_snap):
+    slurm_snap.install()
+    fw_adapter.set_unit_status(ActiveStatus("slurm snap installed"))
 
 def handle_dbd_host_port_available(event, fw_adapter):
-    logger.info(event.handle.__dict__)
+    host = event.host_port.host
     port = event.host_port.port
-    logger.info(port)
-    fw_adapter.set_unit_status(ActiveStatus(port))
+    fw_adapter.set_unit_status(ActiveStatus(f'host: {host} port: {port} '))
 
-def handle_install(event, fw_adapter):
-    fw_adapter.set_unit_status(ActiveStatus("slurm snap installed"))
 
 
 if __name__ == "__main__":

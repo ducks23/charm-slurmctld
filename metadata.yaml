@@ -16,3 +16,8 @@ provides:
 requires:
   slurmdbd-host-port:
     interface: host-port
+resources:
+  slurm:
+    type: file
+    filename: slurm.snap
+    description: slurm snap

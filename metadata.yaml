@@ -9,8 +9,10 @@ description: |
 tags:
     - misc
 series:
-    - bionic
-    - xenial
+    - focal
 provides:
   host-port:
+    interface: host-port
+requires:
+  slurmdbd-host-port:
     interface: host-port

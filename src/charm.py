@@ -11,7 +11,7 @@ from ops.model import ActiveStatus, MaintenanceStatus
 
 from interface_host_port import HostPortRequires
 
-from slurm_snap_instance_manager import SlurmSnapInstanceManager
+from slurm_snap_manager import SlurmSnapInstanceManager
 
 from interface_munge import MungeProvides
 

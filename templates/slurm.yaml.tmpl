@@ -1,0 +1,57 @@
+ClusterName: "SLURM-SNAP-LOCAL"
+PlugStackConfig: "/var/snap/slurm/common/etc/slurm/plugstack.conf"
+
+HealthCheckProgram: "/snap/slurm/current/bin/nhc"
+HealthCheckInterval: "30"
+HealthCheckNodeState: "ANY"
+
+SlurmdPort: 6818
+SlurmctldPort: 6817
+
+SlurmUser: "snap_daemon"
+SlurmdUser: "snap_daemon"
+
+
+#AuthType: "auth/none"
+AuthType: "auth/munge"
+AuthInfo: "socket=/tmp/munged.socket.2"
+
+#SlurmctldHost: ""
+#ControlMachine: ""
+#AccountingStorageHost: "{}"
+AccountingStoragePass: "/tmp/munged.socket.2"
+
+AccountingStorageType: "accounting_storage/slurmdbd"
+AccountingStoragePort: 6819
+#AccountingStorageLoc: "/var/snap/slurm/common/etc/slurm/accounting_file.txt"
+
+JobAcctGatherType: "jobacct_gather/linux"
+JobAcctGatherFrequency: 30
+
+SlurmdLogFile: "/var/snap/slurm/common/var/log/slurm/slurmd.log"
+SlurmctldLogFile: "/var/snap/slurm/common/var/log/slurm/slurmctld.log"
+
+
+SlurmdSpoolDir: "/var/snap/slurm/common/var/spool/slurm/d"
+StateSaveLocation: "/var/snap/slurm/common/var/spool/slurm/ctld"
+
+SlurmdPidFile: "/tmp/slurmd.pid"
+SlurmctldPidFile: "/tmp/slurmctld.pid"
+
+PluginDir: "/snap/slurm/current/lib/slurm"
+MailProg: "/snap/slurm/current/usr/bin/mail.mailutils"
+
+SchedulerType: "sched/backfill"
+
+SwitchType: "switch/none"
+
+TmpFS: "/tmp"
+
+WaitTime: 30
+KillWait: 30
+MaxJobCount: 10000
+MinJobAge: 3600
+ReturnToService: 0
+
+
+ProcTrackType: "proctrack/linuxproc"

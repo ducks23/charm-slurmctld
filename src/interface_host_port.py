@@ -46,13 +46,14 @@ class HostPortRequires(Object):
         )
 
     def _on_relation_changed(self, event):
-        host_port = event.relation.data[event.unit].get('host_port', None)
-        h = HPInfo("foo", "bar")
-        if host_port:
-            logger.info(f"the host_port is : {host_port}")
-            self.on.host_port_available.emit(h)
+        host = event.relation.data[event.unit].get('host', None)
+        port = event.relation.data[event.unit].get('port', None)
+        host_port = HPInfo(host, port)
+        if host and port:
+            logger.info(f"the host_port is : {host} {port}")
+            self.on.host_port_available.emit(host_port)
         else:
-            logger.warning("port host is not in relation data")
+            logger.warning("host port interface is not in relation data")
 
 
 
@@ -88,8 +89,10 @@ class HPInfo:
 
 
 class HostPortProvides(Object):
-    def __init__(self, charm, relation_name):
+    def __init__(self, charm, relation_name, host, port):
         super().__init__(charm, relation_name)
+        self._host = host
+        self._port = port
 
         self.framework.observe(
             charm.on[relation_name].relation_joined,
@@ -97,4 +100,7 @@ class HostPortProvides(Object):
         )
 
     def _on_relation_joined(self, event):
-        event.relation.data[self.model.unit]['host_port'] = f'{socket.gethostname()}:6819'
+        logger.info(self._host)
+        logger.info(self._port)
+        event.relation.data[self.model.unit]['host'] = self._host
+        event.relation.data[self.model.unit]['port'] = self._port

@@ -13,6 +13,8 @@ from interface_host_port import HostPortRequires
 
 from slurm_snap_instance_manager import SlurmSnapInstanceManager
 
+from interface_munge import MungeProvides
+
 from adapters.framework import FrameworkAdapter
 
 logger = logging.getLogger()
@@ -26,7 +28,8 @@ class SlurmctldCharm(CharmBase):
 
         self.dbd_requires = HostPortRequires(self, "slurmdbd-host-port")
         self.fw_adapter = FrameworkAdapter(self.framework)
-        self.slurm_snap = self.slurm_instance_manager_cls(self, "slurmdbd")
+        self.slurm_snap = self.slurm_instance_manager_cls(self, "slurmdctld")
+        self.munge = MungeProvides(self, "munge")
 
         event_handler_bindings = {
             self.on.install: self._on_install,
@@ -55,10 +58,12 @@ def handle_install(event, fw_adapter, slurm_snap):
     slurm_snap.install()
     fw_adapter.set_unit_status(ActiveStatus("slurm snap installed"))
 
-def handle_dbd_host_port_available(event, fw_adapter):
+def handle_dbd_host_port_available(event, fw_adapter, slurm_snap):
     host = event.host_port.host
-    port = event.host_port.port
-    fw_adapter.set_unit_status(ActiveStatus(f'host: {host} port: {port} '))
+    slurm_snap.write_config({
+        'host': event.host_port.host,
+    })
+    fw_adapter.set_unit_status(ActiveStatus(f'host: {host}'))
 
 
 

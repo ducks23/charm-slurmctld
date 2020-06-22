@@ -10,12 +10,12 @@ tags:
     - misc
 series:
     - focal
-provides:
-  host-port:
-    interface: host-port
 requires:
   slurmdbd-host-port:
     interface: host-port
+provides:
+  munge:
+    interface: munge
 resources:
   slurm:
     type: file

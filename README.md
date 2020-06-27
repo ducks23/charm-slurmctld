@@ -16,6 +16,8 @@ source venv/bin/activate
 pip install charmcraft
 charmcraft build
 juju deploy ./slurmctld.charm
+```
+
 
 There is also the option of supplying the Slurmdbd Charm with the slurm-snap as a resource to avoid downloading from the snapstore
 
